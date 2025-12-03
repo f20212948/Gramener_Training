@@ -1,0 +1,253 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Student Management API",
+    "description": "API for managing student records (CRUD operations).",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    },
+    {
+      "url": "http://None:NoneNone"
+    }
+  ],
+  "tags": [
+    {
+      "name": "student",
+      "description": "CRUD Operations for Student Records"
+    }
+  ],
+  "paths": {
+    "/students": {
+      "get": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Retrieve all students",
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of student list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Create a new student record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (e.g., missing required fields)"
+          }
+        }
+      }
+    },
+    "/students/{id}": {
+      "get": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Retrieve a specific student record by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "ID of the student to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Update an existing student record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "ID of the student to be updated"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Delete a student record by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "ID of the student to be deleted"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted successfully (No Content)"
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Student": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Dheekshith"
+          },
+          "age": {
+            "type": "integer",
+            "example": 22
+          },
+          "course": {
+            "type": "string",
+            "example": "Artificial Intelligence"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Machine-generated timestamp for creation time."
+          }
+        },
+        "required": [
+          "name",
+          "age",
+          "course"
+        ]
+      },
+      "StudentInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Dheekshith"
+          },
+          "age": {
+            "type": "integer",
+            "example": 22
+          },
+          "course": {
+            "type": "string",
+            "example": "Artificial Intelligence"
+          }
+        },
+        "required": [
+          "name",
+          "age",
+          "course"
+        ],
+        "description": "Data structure for creating or updating a student record. Does not include server-generated fields like 'id' or 'created_at'."
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
